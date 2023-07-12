@@ -1,4 +1,4 @@
-import "@/styles/globals.css";
+import { getCssText } from "@/styles";
 import type { AppProps } from "next/app";
 import { Roboto } from "next/font/google";
 
@@ -11,6 +11,7 @@ const roboto = Roboto({
 export default function App({ Component, pageProps }: AppProps) {
   return (
     <main className={roboto.className}>
+      <style id="stitches" dangerouslySetInnerHTML={{ __html: getCssText() }} />
       <Component {...pageProps} />
     </main>
   );
