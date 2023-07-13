@@ -4,8 +4,9 @@ import {
   ProductContainer,
   ProductDetails,
 } from "@/styles/pages/product";
-import { GetStaticProps } from "next";
+import { GetStaticPaths, GetStaticProps } from "next";
 import Image from "next/image";
+import { useRouter } from "next/router";
 import Stripe from "stripe";
 
 interface ProductProps {
@@ -19,6 +20,9 @@ interface ProductProps {
 }
 
 export default function Product({ product }: ProductProps) {
+  //estado de loading para fazer a página de skeleton
+  const { isFallback } = useRouter();
+
   return (
     <>
       <ProductContainer>
@@ -35,6 +39,23 @@ export default function Product({ product }: ProductProps) {
     </>
   );
 }
+
+export const getStaticPaths: GetStaticPaths = async () => {
+  //Deixar nos params sempre os produtos mais buscados da aplicação
+  //Para que ele possa gerar eles de forma estática
+
+  return {
+    paths: [
+      {
+        params: { id: "prod_OFR2hwegdr49B9" },
+      },
+    ],
+    // fallback true, busca por qualquer parametros
+    // fallback false, busca apenas pelos parâmetros estaticos passados
+    // fallback blocking busca por qualquer parâmetro porém só renderiza a página ao finalizar o loading
+    fallback: "blocking",
+  };
+};
 
 export const getStaticProps: GetStaticProps<any, { id: string }> = async ({
   params,
