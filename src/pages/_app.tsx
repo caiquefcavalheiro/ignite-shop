@@ -1,4 +1,3 @@
-import { getCssText } from "@/styles";
 import { globalStyles } from "@/styles/global";
 import type { AppProps } from "next/app";
 import { Roboto } from "next/font/google";
@@ -18,7 +17,6 @@ globalStyles();
 export default function App({ Component, pageProps }: AppProps) {
   return (
     <main className={roboto.className}>
-      <style id="stitches" dangerouslySetInnerHTML={{ __html: getCssText() }} />
       <Container>
         <Header>
           <Image src={logoImg} alt="" />
