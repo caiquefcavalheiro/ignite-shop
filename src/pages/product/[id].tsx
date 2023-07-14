@@ -1,14 +1,14 @@
+import { CartContext } from "@/src/context/cartContext";
 import { stripe } from "@/src/lib/stripe";
 import {
   ImageContainer,
   ProductContainer,
   ProductDetails,
 } from "@/styles/pages/product";
-import axios from "axios";
 import { GetStaticPaths, GetStaticProps } from "next";
 import Head from "next/head";
 import Image from "next/image";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import Stripe from "stripe";
 
 interface ProductProps {
@@ -16,7 +16,7 @@ interface ProductProps {
     id: string;
     name: string;
     imageUrl: string;
-    price: string;
+    price: number;
     description: string;
     defaultPriceId: string;
   };
@@ -32,21 +32,35 @@ export default function Product({ product }: ProductProps) {
   const [isCreatingCheckoutSession, setIsCreatingCheckoutSession] =
     useState(false);
 
+  const { cart, addToCart, removeFromCart } = useContext(CartContext);
+
+  const findProduct = cart.find(
+    (cartProduct) => cartProduct.id === product.defaultPriceId
+  );
+
   async function handleBuyProduct() {
     try {
-      setIsCreatingCheckoutSession(true);
-      const response = await axios.post("/api/checkout", {
-        priceId: product.defaultPriceId,
+      addToCart({
+        id: product.defaultPriceId,
+        name: product.name,
+        imageUrl: product.imageUrl,
+        price: product.price,
       });
-
-      const { checkoutUrl } = response.data;
-
-      window.location.href = checkoutUrl;
     } catch (err) {
       setIsCreatingCheckoutSession(false);
-      alert("Falha ao redirecionar ao checkout");
     }
   }
+
+  function handleRemoveProduct() {
+    try {
+      removeFromCart(product.defaultPriceId);
+    } catch (err) {}
+  }
+
+  const productPrice = new Intl.NumberFormat("pt-BR", {
+    style: "currency",
+    currency: "BRL",
+  }).format(product.price);
 
   return (
     <>
@@ -59,13 +73,21 @@ export default function Product({ product }: ProductProps) {
         </ImageContainer>
         <ProductDetails>
           <h1>{product.name}</h1>
-          <span>{product.price}</span>
+          <span>{productPrice}</span>
           <p>{product.description}</p>
-          <button
-            disabled={isCreatingCheckoutSession}
-            onClick={handleBuyProduct}>
-            Comprar agora
-          </button>
+          {findProduct ? (
+            <button
+              disabled={isCreatingCheckoutSession}
+              onClick={handleRemoveProduct}>
+              Remover da sacola
+            </button>
+          ) : (
+            <button
+              disabled={isCreatingCheckoutSession}
+              onClick={handleBuyProduct}>
+              Colocar na sacola
+            </button>
+          )}
         </ProductDetails>
       </ProductContainer>
     </>
@@ -106,10 +128,7 @@ export const getStaticProps: GetStaticProps<any, { id: string }> = async ({
         id: product.id,
         name: product.name,
         imageUrl: product.images[0],
-        price: new Intl.NumberFormat("pt-BR", {
-          style: "currency",
-          currency: "BRL",
-        }).format(price.unit_amount! / 100),
+        price: price.unit_amount! / 100,
         description: product.description,
         defaultPriceId: price.id,
       },

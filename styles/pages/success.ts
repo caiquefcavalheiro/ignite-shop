@@ -34,6 +34,11 @@ export const SuccessContainer = styled("main", {
       color: "$green300",
     },
   },
+
+  "& > div": {
+    display: "flex",
+    gap: "0.5rem",
+  },
 });
 
 export const ImageContainer = styled("div", {
@@ -41,7 +46,7 @@ export const ImageContainer = styled("div", {
   maxWidth: 130,
   height: 145,
   background: "linear-gradient(180deg, #1ea483 0%, #7465d4 100%)",
-  borderRadius: 8,
+  borderRadius: "50%",
   padding: "0.25rem",
   marginTop: "4rem",
 

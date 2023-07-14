@@ -74,6 +74,9 @@ export const CartContainer = styled("div", {
 
 export const CartList = styled("ul", {
   height: "60vh",
+  display: "flex",
+  flexDirection: "column",
+  gap: "1.5rem",
 });
 
 export const CartProduct = styled("div", {
