@@ -37,15 +37,16 @@ export function Cart() {
   async function handleBuyProduct() {
     try {
       setIsCreatingCheckoutSession(true);
-      const response = await axios.post("/api/checkoutCart", {
-        cart,
-      });
+      if (cart.length > 0) {
+        const response = await axios.post("/api/checkoutCart", {
+          cart,
+        });
 
-      const { checkoutUrl } = response.data;
+        const { checkoutUrl } = response.data;
 
-      cleanCart();
-
-      window.location.href = checkoutUrl;
+        window.location.href = checkoutUrl;
+      }
+      setIsCreatingCheckoutSession(false);
     } catch (err) {
       setIsCreatingCheckoutSession(false);
       alert("Falha ao redirecionar ao checkout");

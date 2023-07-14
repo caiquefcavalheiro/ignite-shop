@@ -37,13 +37,18 @@ export const SuccessContainer = styled("main", {
 
   "& > div": {
     display: "flex",
+    justifyContent: "center",
     gap: "0.5rem",
+    position: "relative",
+    height: 260,
+    width: "60%",
   },
 });
 
 export const ImageContainer = styled("div", {
   width: "100%",
   maxWidth: 130,
+  minWidth: 130,
   height: 145,
   background: "linear-gradient(180deg, #1ea483 0%, #7465d4 100%)",
   borderRadius: "50%",
@@ -53,6 +58,10 @@ export const ImageContainer = styled("div", {
   display: "flex",
   alignItems: "center",
   justifyContent: "center",
+
+  position: "relative",
+  top: 0,
+  boxShadow: "0 0 0 2px #121214",
 
   img: {
     objectFit: "cover",

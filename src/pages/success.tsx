@@ -26,16 +26,18 @@ export default function Success({ customerName, products }: SuccessProps) {
         <meta name="robots" content="noindex" />
       </Head>
       <SuccessContainer>
-        <h1>Compra efetuada</h1>
         <div>
-          {products.map((product) => {
+          {products.map((product, index) => {
             return (
-              <ImageContainer key={product.name}>
+              <ImageContainer
+                key={product.name}
+                css={{ right: `${index * 25}px`, zIndex: index }}>
                 <Image src={product.imageUrl} width={120} height={110} alt="" />
               </ImageContainer>
             );
           })}
         </div>
+        <h1>Compra efetuada</h1>
         <p>
           Uhuul <strong>{customerName}</strong>, sua(s){" "}
           <strong>{cart.length} camisas</strong> já está(ão) a caminho da sua

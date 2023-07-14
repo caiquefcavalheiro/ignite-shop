@@ -19,6 +19,8 @@ export const Header = styled("header", {
 });
 
 export const HeaderIcon = styled("div", {
+  display: "flex",
+  alignItems: "center",
   padding: "0.75rem",
   background: "$gray800",
   borderRadius: 8,
